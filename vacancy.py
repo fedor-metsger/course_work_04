@@ -1,4 +1,5 @@
 
+import json
 
 HH_FILE_NAME = "hh.json"
 SJ_FILE_NAME = "sj.json"
@@ -19,8 +20,10 @@ class Vacancy:
         return f'Vacancy("{self.name}", "{self.company}", "{self.salary}", "{self.url}")'
 
 
-
 class CountMixin:
+
+    def __init__(self, fname):
+        self.filename = fname
 
     @property
     def get_count_of_vacancy(self):
@@ -28,12 +31,26 @@ class CountMixin:
         Вернуть количество вакансий от текущего сервиса.
         Получать количество необходимо динамически из файла.
         """
-        pass
+        try:
+            with open(self.filename, encoding="utf-8") as f:
+                data = json.load(f)
+            print("Загружены данные типа:", type(data))
+            if (type(data) != "list"):
+                print(f"Файл {self.filename} не содержит список")
+                return False
+            for key, value in data.items():
+                print("{:<20} {:<10} ".format(key, value))
+            return len(data)
+        except:
+            print(f"Ошибка при открытии файла {self.filename}")
 
 
 
-class HHVacancy(Vacancy):  # add counter mixin
+class HHVacancy(Vacancy, CountMixin):  # add counter mixin
     """ HeadHunter Vacancy """
+
+    def __init__(self):
+        super().__init__(HH_FILE_NAME)
 
     def __str__(self):
         return f'HH: {self.company_name}, зарплата: {self.salary} руб/мес'
@@ -42,6 +59,8 @@ class HHVacancy(Vacancy):  # add counter mixin
 
 class SJVacancy(Vacancy):  # add counter mixin
     """ SuperJob Vacancy """
+    def __init__(self):
+        super().__init__(SJ_FILE_NAME)
 
     def __str__(self):
         return f'SJ: {self.company_name}, зарплата: {self.salary} руб/мес'
