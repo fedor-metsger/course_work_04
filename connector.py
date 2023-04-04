@@ -1,5 +1,7 @@
 
-from vacancy import Vacancy, HHVacancy, SJVacancy, HH_FILE_NAME, SJ_FILE_NAME
+import json
+import os
+from vacancy import Vacancy, HHVacancy, SJVacancy, HH_FILE_NAME, SJ_FILE_NAME, CountMixin
 
 class Connector:
     """
@@ -9,6 +11,9 @@ class Connector:
     """
     __data_file = None
 
+    def __init__(self):
+        self.__data_file = None
+
     @property
     def data_file(self):
         return self.__data_file
@@ -16,11 +21,14 @@ class Connector:
     @data_file.setter
     def data_file(self, value):
         # тут должен быть код для установки файла
-        if type(value) != "str":
+        if not isinstance(value, str):
             print("Имя файла должно быть строкой")
             return
         self.__data_file = value
-        self.__connect()
+        try:
+           self.__connect()
+        except Exception as e:
+            print(f"Ошибка при обращении к файлу {self.__data_file}:", repr(e))
 
     def __connect(self):
         """
@@ -30,11 +38,11 @@ class Connector:
         если файл потерял актуальность в структуре данных
         """
         try:
-            vac = Vacancy(self.__data_file)
-            count = vac.get_count_of_vacancy()
-            if type(count) != "int":
-                raise ValueError(f"Файл {self.__data_file} содержит неверный формат данных")
+            vac = CountMixin(self.__data_file)
+            count = vac.get_count_of_vacancy
         except FileNotFoundError:
+            print(f"Нет такого файла {self.__data_file}. Будет создан новый файл.")
+            count = 0
             try:
                 self.file = open(self.__data_file, "w", encoding="utf-8")
                 self.file.write("[]")
@@ -42,6 +50,8 @@ class Connector:
             except:
                 print(f"Ошибка при создании файла {self.__data_file}")
                 return False
+        except json.decoder.JSONDecodeError:
+            raise json.decoder.JSONDecodeError(f"Файл {self.__data_file} содержит не JSON", "", 0)
         return count
 
 
@@ -49,7 +59,13 @@ class Connector:
         """
         Запись данных в файл с сохранением структуры и исходных данных
         """
-        pass
+        try:
+            with open(self.__data_file, "w", encoding="utf-8") as f:
+                data = json.dump(data, f, indent=4, ensure_ascii=False)
+            return True
+        except Exception as e:
+            print(f"Ошибка при записи в файл {self.__data_file}:", repr(e))
+            return False
 
 
     def select(self, query):
@@ -70,14 +86,21 @@ class Connector:
         """
         pass
 
+    @staticmethod
+    def delete_file(fname):
+        try:
+            os.remove(fname)
+            return True
+        except:
+            return False
+
 class HHConnector(Connector):
     def __init__(self):
-        super().data_file = HH_FILE_NAME
+        self.data_file = HH_FILE_NAME
 
 class SJConnector(Connector):
     def __init__(self):
-        super().__init__(SJ_FILE_NAME)
-        super().__connect()
+        self.data_file = SJ_FILE_NAME
 
 if __name__ == '__main__':
     df = Connector('df.json')
