@@ -12,8 +12,8 @@ class HHVacancy(Vacancy):
     def __str__(self):
         return f'HHVacancy:("{self.site}", "{self.name}", "{self.company}")'
 
-    def __dict__(self):
-        dic = Vacancy.__dict__()
+    def to_dict(self):
+        dic = Vacancy.to_dict(self)
         dic["site"] = self.site
         return dic
 

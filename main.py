@@ -1,5 +1,4 @@
 
-import requests
 from pprint import pprint
 from connector import Connector, HHConnector, SJConnector
 from vacancy import HHVacancy, SJVacancy, HH_FILE_NAME, SJ_FILE_NAME
@@ -54,21 +53,6 @@ def main():
             except Exception as e:
                 print(f"Ошибка при чтении файла: {repr(e)}")
         elif i == '6': return
-
-    # token = ""
-    # params = {
-    #     'host': "hh.ru",
-    #     "text": "python"
-    # }
-    #
-    # headers = {
-    #     "User-Agent": " CourseWork04/1.0 (fedor.metsger@gmail.com)"
-    # }
-    #
-    # url = "https://api.hh.ru/vacancies"
-    # response = requests.get(url, params=params)
-    # pprint(response.json())
-
 
 if __name__ == "__main__":
     main()
