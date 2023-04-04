@@ -1,7 +1,9 @@
 
 import json
 import os
-from vacancy import Vacancy, HHVacancy, SJVacancy, HH_FILE_NAME, SJ_FILE_NAME, CountMixin
+
+HH_FILE_NAME = "hh.json"
+SJ_FILE_NAME = "sj.json"
 
 class Connector:
     """

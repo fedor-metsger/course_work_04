@@ -1,5 +1,6 @@
 
 import Vacancy from vacancy.vacancy
+
 class HHVacancy(Vacancy, CountMixin):  # add counter mixin
     """ HeadHunter Vacancy """
 

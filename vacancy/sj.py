@@ -1,3 +1,5 @@
+
+
 class SJVacancy(Vacancy):  # add counter mixin
     """ SuperJob Vacancy """
     def __init__(self):
