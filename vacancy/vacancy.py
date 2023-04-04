@@ -23,15 +23,20 @@ class Vacancy:
     def __str__(self):
         return f'Vacancy("{self.name}", "{self.company}")'
 
-    def __dict__(self):
-        return {"id", self.id, "name": self.name, "url": self.url, "descr": self.descr,
-                "sal_fr": self.sal_fr, "sal_to": self.sal_to, "curr": self.curr, "company": self.company}
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "company": self.company, "url": self.url,
+                "descr": self.descr, "sal_fr": self.sal_fr, "sal_to": self.sal_to, "curr": self.curr}
 
 class VacancyCollection():
     def __init__(self):
         self.vacancies = {}
 
+    def __str__(self):
+        return f'VacancyCollection({len(self.vacancies)} vacancies)'
+
     def add_vacancy(self, vac: Vacancy) -> bool:
         if not isinstance(vac, Vacancy):
             raise TypeError("Можно добавлять только элементы типа Vacancy")
-        self.vacancies[vac.id] = dict(vac)
+        if vac.id in self.vacancies:
+            raise ValueError("Вакансия с таким ID уже загружена")
+        self.vacancies[vac.id] = vac.to_dict()
