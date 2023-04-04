@@ -69,6 +69,9 @@ class HH(Engine):
         :param kw: ключевые слова
         :return:
         """
+        if not isinstance(kw, str):
+            raise ValueError("Ключевые слова должны задаваться строкой")
+
         print(f'Выполняется загрузка вакансий с сайта HeadHunter c ключевыми словами "{kw}"')
 
         count, pg = 0, 0

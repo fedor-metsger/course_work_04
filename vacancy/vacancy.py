@@ -3,14 +3,15 @@ class Vacancy:
 
     def __init__(self, id: str, name: str, company:str, url: str,
                  descr: str, sal_fr:int, sal_to: int, curr: str):
-        if not id or id == "":
-            raise ValueError("ID вакансии не может быть пустым")
-        if not name or id == "":
-            raise ValueError("Название вакансии не может быть пустым")
-        if not company or company == "":
-            raise ValueError("Название компании не может быть пустым")
-        if not url or url == "":
-            raise ValueError("URL вакансии не может быть пустым")
+
+        if not isinstance(id, str) or id == "":
+            raise ValueError("ID вакансии должно быть непустой строкой")
+        if not isinstance(name, str) or name == "":
+            raise ValueError("Название вакансии должно быть непустой строкой")
+        if not isinstance(company, str) or company == "":
+            raise ValueError("Название компании должно быть непустой строкой")
+        if not isinstance(url, str) or url == "":
+            raise ValueError("URL вакансии должен быть непустой строкой")
         self.id = id
         self.name = name
         self.url = url

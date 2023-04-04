@@ -5,7 +5,8 @@ class HHVacancy(Vacancy):
     """ HeadHunter Vacancy """
     def __init__(self, id: str, name: str, company:str, url: str,
                  descr: str, sal_fr:int, sal_to: int, curr: str, site: str):
-
+        if not isinstance(site, str) or site == "":
+            raise ValueError("Сайт вакансии должен быть непустой строкой")
         Vacancy.__init__(self, id, name, company, url, descr, sal_fr, sal_to, curr)
         self.site = site
 

@@ -8,7 +8,7 @@ class Engine(ABC):
         self.data = VacancyCollection()
 
     @abstractmethod
-    def download_vacancies(self, kw: str):
+    def download_vacancies(self, kw: str) -> bool:
         """
         Осуществляет загрузку данных с сайта.
         Данные загружаются по ключевым словам
@@ -18,13 +18,13 @@ class Engine(ABC):
         pass
 
     # @abstractmethod
-    # def save_vacancies(self):
-    #     """
-    #     Осуществляет сохранение данных в файл
-    #     :param:
-    #     :return:
-    #     """
-    #     pass
+    def save_vacancies(self):
+        """
+        Осуществляет сохранение данных в файл
+        :param:
+        :return:
+        """
+
     #
     # @abstractmethod
     # def load_vacancies(self):
