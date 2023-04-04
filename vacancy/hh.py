@@ -1,5 +1,5 @@
 
-from vacancy import Vacancy, VacancyCollection
+from vacancy.vacancy import Vacancy, VacancyCollection
 
 class HHVacancy(Vacancy):
     """ HeadHunter Vacancy """

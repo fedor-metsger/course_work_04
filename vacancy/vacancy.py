@@ -29,14 +29,19 @@ class Vacancy:
 
 class VacancyCollection():
     def __init__(self):
-        self.vacancies = {}
+        self.__vacancies = {}
 
     def __str__(self):
-        return f'VacancyCollection({len(self.vacancies)} vacancies)'
+        return f'VacancyCollection({len(self.__vacancies)} vacancies)'
 
     def add_vacancy(self, vac: Vacancy) -> bool:
         if not isinstance(vac, Vacancy):
             raise TypeError("Можно добавлять только элементы типа Vacancy")
-        if vac.id in self.vacancies:
+        if vac.id in self.__vacancies:
             raise ValueError("Вакансия с таким ID уже загружена")
-        self.vacancies[vac.id] = vac.to_dict()
+        self.__vacancies[vac.id] = vac.to_dict()
+
+    def clear_vacancies(self):
+        self.__vacancies = {}
+
+

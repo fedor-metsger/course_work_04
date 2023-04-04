@@ -30,42 +30,6 @@ def ask_user_input():
             print("Некорректный ввод, попробуйте ещё..")
 
 
-def download_hh_to_file(kw:str):
-    """
-    Производит загрузку данных с сайта hh.ru
-    :param kw:
-    :return:
-    """
-    print("Выполняется загрузка вакансий с сайта HeadHunter по ключевому слову", kw)
-    # headers = {
-    #     "User-Agent": " CourseWork04/1.0 (fedor.metsger@gmail.com)"
-    # }
-    url = "https://api.hh.ru/vacancies"
-    params = {
-        'host': "hh.ru",
-        "text": kw,
-        "page": 0,
-        "per_page": 100
-    }
-    res = []
-    try:
-        response = requests.get(url, params=params)
-        for i in response.json()["items"]:
-            # print(i["id"])
-            company, descr, salary = None, None, None
-            if isinstance(i["employer"], dict): company = i["employer"]["name"]
-            if isinstance(i["snippet"], dict): descr = i["snippet"]["responsibility"]
-            if isinstance(i["salary"], dict): salary = i["salary"]["from"]
-            # res.append(HHVacancy(i["name"], i["employer"]["name"], i["url"], i["snippet"]["responsibility"], i["salary"]["from"]))
-            res.append({"name":i["name"], "company": company, "url": i["url"], "descr": descr, "salary": salary})
-    except Exception as e:
-        print("Ошибка при запросе данных с сайта HeadHunter:", repr(e))
-
-    if len(res) > 0:
-        Connector.delete_file(HH_FILE_NAME)
-        conn = HHConnector()
-        conn.insert(res)
-
 def download_sj_to_file(kw:str):
     """
     Производит загрузку данных с сайта superjob.ru
