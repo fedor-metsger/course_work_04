@@ -3,12 +3,14 @@ import requests
 from api import Engine
 from vacancy.vacancy import VacancyCollection
 from vacancy.hh import HHVacancy
+from connector.connector import Connector
+from connector.jsonconn import JSONConnector
 
 PAGE_SIZE = 100
 
 class HH(Engine):
-    def __init__(self, site: str):
-        Engine.__init__(self)
+    def __init__(self, site: str, conn: Connector):
+        Engine.__init__(self, conn)
         self.site = site
 
     def __str__(self):
@@ -87,10 +89,17 @@ class HH(Engine):
                 print(f'Загружено {count} вакансий')
                 return True
 
+    def save_vacancies(self):
+        dict = self.connector.load_from_file()
+        dict.update(self.data.to_dict())
+        self.connector.dump_to_file(dict)
+
+
 def main():
-    api = HH("hh.ru")
+    api = HH("hh.ru", JSONConnector("test.json"))
     api.download_vacancies("Flask Django")
     print(api)
+    api.save_vacancies()
 
 if __name__ == "__main__":
     main()

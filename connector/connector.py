@@ -56,3 +56,16 @@ class Connector(ABC):
         self.file = None
         self.check_file_exist_and_ok()
 
+    @abstractmethod
+    def dump_to_file(self, data: dict):
+        """
+        Записывает данные в файл
+        """
+        pass
+
+    @abstractmethod
+    def load_from_file(self) -> dict:
+        """
+        Записывает данные в файл
+        """
+        pass

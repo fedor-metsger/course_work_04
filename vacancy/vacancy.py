@@ -45,4 +45,10 @@ class VacancyCollection():
     def clear_vacancies(self):
         self.__vacancies = {}
 
+    def to_dict(self):
+        data = {}
+        for i in self.__vacancies:
+            data[i] = self.__vacancies[i]
+        return data
+
 
