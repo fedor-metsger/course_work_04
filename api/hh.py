@@ -28,7 +28,7 @@ class HH(Engine):
         params = {
             'host': self.site,
             "text": kw,
-            "area": [1, 2],
+            # "area": [1, 2],
             "page": pg,
             "per_page": PAGE_SIZE
         }
