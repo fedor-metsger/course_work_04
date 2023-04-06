@@ -145,17 +145,26 @@ class UserSelection():
     Класс описывает операцию, которую хочет выполнить пользователь
     """
     def __init__(self):
-        self.site = SelectionSite()
-        self.stype = SelectionSearchType()
-        self.action = SelectionAction()
-        self.region = SelectionRegion()
-        self.ftype = SelectionFType()
-        self.record_quant = 10
-        self.key_word = ""
+        self._site = SelectionSite()
+        self._stype = SelectionSearchType()
+        self._action = SelectionAction()
+        self._region = SelectionRegion()
+        self._ftype = SelectionFType()
+        self._record_quant = 10
+        self._key_word = ""
 
     def __str__(self):
         return f'UserSelection({self.site.site}, {self.action.action}, ' \
                f'{self.stype.stype}, {self.region.region}, {self.ftype.ftype}, {self.record_quant})'
+
+    def action(self):
+        return SEL_ACTIONS[self._action.action]["action"]
+
+    def site(self):
+        return SEL_SITES[self._site.site]["name"]
+
+    def ftype(self):
+        return SEL_FTYPES[self._ftype.ftype]["name"]
 
     def select_quant(self, defq):
         while True:
@@ -195,14 +204,14 @@ class UserSelection():
             if i == '6': return
 
     def select_action(self):
-        self.action.select()
-        if SEL_ACTIONS[self.action.action]["action"] == "DOWNLOAD":
-            self.site.select()
-            self.ftype.select()
+        self._action.select()
+        if self.action() == "DOWNLOAD":
+            self._site.select()
+            self._ftype.select()
             self.select_keyword("")
-        if SEL_ACTIONS[self.action.action]["action"] == "SELECT":
-            self.ftype.select()
-            self.select_search()
+        if self.action() == "SELECT":
+            self._ftype.select()
+            self._select_search()
 
 
 def main():

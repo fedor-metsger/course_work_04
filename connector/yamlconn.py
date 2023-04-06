@@ -15,7 +15,7 @@ class YAMLConnector(Connector):
             with open(self.fname, "r", encoding="utf-8") as f:
                 yaml.load(f, Loader=yaml.FullLoader)
             return True
-        except json.decoder.JSONDecodeError:
+        except yaml.YAMLError:
             return False
 
     def dump_to_file(self, data: dict):

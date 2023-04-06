@@ -8,25 +8,26 @@ def main():
     us = UserSelection()
     while True:
         us.select_action()
-        if SEL_ACTIONS[us.action.action]["action"] == "DOWNLOAD":
-            print(f'Выполняется загрузка вакансий с сайта {SEL_SITES[us.site.site]["name"]} ' \
-                  f'в файл {SEL_SITES[us.ftype.ftype]["name"]}' \
+        if us.action() == "DOWNLOAD":
+            print(f'Выполняется загрузка вакансий с сайта {us.site()} ' \
+                  f'в файл {us.ftype()} ' \
                   f'по ключевому слову "{us.key_word}"')
 
-            if SEL_SITES[us.site.site]["name"] == "HeadHunter" and SEL_FTYPES[us.ftype.ftype]["name"] == "JSON":
+            if us.site() == "HeadHunter" and us.ftype() == "JSON":
                 connector = JSONConnector("hh.json")
                 api = HH("hh.ru", connector)
-            elif SEL_SITES[us.site.site]["name"] == "HeadHunter" and SEL_FTYPES[us.ftype.ftype]["name"] == "YAML":
+            elif us.site() == "HeadHunter" and us.ftype() == "YAML":
                 connector = YAMLConnector("hh.yaml")
                 api = HH("hh.ru", connector)
             else:
                 return
             if api.download_vacancies(us.key_word):
                 api.save_vacancies()
-        elif SEL_ACTIONS[us.action.action]["action"] == "SELECT":
+        elif us.action() == "SELECT":
             us.select_search()
-        elif SEL_ACTIONS[us.action.action]["action"] == "EXIT":
+        elif us.action() == "EXIT":
             return
+
 
 if __name__ == "__main__":
     main()
