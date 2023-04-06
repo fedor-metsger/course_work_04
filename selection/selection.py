@@ -62,7 +62,7 @@ class SelectionSite():
         Запрашивает у пользователя тип файла
         :return:
         """
-        self.site = select_from_dict("Введите сайт для поиска", self.site, SEL_SITES)
+        self.site = select_from_dict("Выберите сайт для поиска", self.site, SEL_SITES)
         return self.site
 
 class SelectionSearchType():
@@ -81,7 +81,7 @@ class SelectionSearchType():
         Запрашивает у пользователя тип файла
         :return:
         """
-        self.stype = select_from_dict("Введите тип поиска вакансий", self.stype, SEARCH_TYPES)
+        self.stype = select_from_dict("Выберите тип поиска вакансий", self.stype, SEARCH_TYPES)
         return self.stype
 
 class SelectionAction():
