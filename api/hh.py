@@ -1,6 +1,6 @@
 
 import requests
-from api import Engine
+from api.api import Engine
 from vacancy.vacancy import VacancyCollection
 from vacancy.hh import HHVacancy
 from connector.connector import Connector
@@ -87,6 +87,9 @@ class HH(Engine):
             count += ret
             if pg == ret_pages:
                 print(f'Загружено {count} вакансий')
+                return True
+            if count >= 1000:
+                print(f'Загрузка временно ограничена 1000 вакансий. Загружено {count} вакансий')
                 return True
 
     def save_vacancies(self):

@@ -167,7 +167,8 @@ class UserSelection():
             return int(q)
 
     def select_keyword(self, kw):
-        return input(f"Введите ключевое слово или несколько слов, разделённых пробелом => ")
+        self.key_word = input(f"Введите ключевое слово или несколько слов, разделённых пробелом => ")
+        return self.key_word
 
     def select_search(self):
         while True:
@@ -175,7 +176,7 @@ class UserSelection():
                       f'с использованием ключевого слова "{self.key_word}"'
             region_text = "без учёта региона" if SEL_REGIONS[self.region.region]["hh_code"] == None else \
                       f'по региону {SEL_REGIONS[self.region.region]["name"]}'
-            print(f'Из данных по сайту {SEL_SITES[self.site.site]["name"]} ' \
+            print(f'Из файла с данными по сайту {SEL_SITES[self.site.site]["name"]} ' \
                   f'будут отбираться {SEARCH_TYPES[self.stype.stype]["name"].lower()}\n' \
                   f'{region_text} ' \
                   f'в количестве {self.record_quant} {kw_test}. Изменить запрос (6)?')
@@ -198,6 +199,7 @@ class UserSelection():
         if SEL_ACTIONS[self.action.action]["action"] == "DOWNLOAD":
             self.site.select()
             self.ftype.select()
+            self.select_keyword("")
         if SEL_ACTIONS[self.action.action]["action"] == "SELECT":
             self.ftype.select()
             self.select_search()
