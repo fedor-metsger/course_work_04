@@ -26,7 +26,10 @@ class Engine(ABC):
         :param:
         :return:
         """
-
+    def save_vacancies(self):
+        dict = self.connector.load_from_file()
+        dict.update(self.data.to_dict())
+        self.connector.dump_to_file(dict)
     #
     # @abstractmethod
     # def load_vacancies(self):
