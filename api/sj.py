@@ -1,9 +1,9 @@
 
 from pprint import pprint
 import requests
-from api import Engine
+from api.api import Engine
 from vacancy.vacancy import VacancyCollection
-from vacancy.hh import HHVacancy
+from vacancy.sj import SJVacancy
 from connector.connector import Connector
 from connector.jsonconn import JSONConnector
 
@@ -51,7 +51,6 @@ class SJ(Engine):
                 url = i["link"]
                 company, descr, salary_from, salary_to, currency, city = None, None, None, None, None, None
                 if isinstance(i["client"], dict): company = i["client"]["title"]
-            #     if isinstance(i["snippet"], dict): descr = i["snippet"]["responsibility"]
                 descr = i["candidat"]
                 if isinstance(i["town"], dict): city = i["town"]["title"]
                 salary_from = i["payment_from"]
@@ -59,13 +58,10 @@ class SJ(Engine):
                 currency = i["currency"]
 
                 print(id, name, salary_from, salary_to, currency, city, url)
-            #
-            #     # res.append({"name": i["name"], "company": company, "url": i["url"],
-            #     #             "salary_from": salary_from, "salary_to": salary_to, "currency": currency,
-            #     #             "url": i["url"], "city": city})
-            #     vac = HHVacancy(i["id"], i["name"], company, i["url"],
-            #                     descr, salary_from, salary_to, currency, self.site)
-            #     self.data.add_vacancy(vac)
+
+                vac = SJVacancy(str(id), name, company, url,
+                                descr, salary_from, salary_to, currency)
+                self.data.add_vacancy(vac)
                 count += 1
         except Exception as e:
             print("Ошибка при запросе данных с сайта SuperJob:", repr(e))

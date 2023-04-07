@@ -1,5 +1,5 @@
 
-from vacancy.vacancy import Vacancy
+from vacancy.vacancy import Vacancy, VacancyCollection
 
 
 class SJVacancy(Vacancy):
@@ -7,3 +7,5 @@ class SJVacancy(Vacancy):
 
     def __str__(self):
         return f'SJVacancy:("{self.name}", "{self.company}")'
+
+
