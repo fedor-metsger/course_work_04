@@ -27,7 +27,7 @@ class JSONConnector(Connector):
 
     def load_from_file(self) -> dict:
         """
-        Записывает данные в файл
+        Забирает данные из файла
         """
         with open(self.fname, "r", encoding="utf-8") as f:
             return json.load(f)

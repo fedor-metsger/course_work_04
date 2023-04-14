@@ -151,18 +151,25 @@ class UserSelection():
         self._region = SelectionRegion()
         self._ftype = SelectionFType()
         self._record_quant = 10
-        self._key_word = ""
+        self._keyword = ""
+
+    @property
+    def keyword(self):
+        return self._keyword
 
     def __str__(self):
-        return f'UserSelection({self.site.site}, {self.action.action}, ' \
-               f'{self.stype.stype}, {self.region.region}, {self.ftype.ftype}, {self.record_quant})'
+        return f'UserSelection({self.site._site}, {self._action.action}, ' \
+               f'{self._stype.stype}, {self._region.region}, {self._ftype.ftype}, {self.record_quant})'
 
+    @property
     def action(self):
         return SEL_ACTIONS[self._action.action]["action"]
 
+    @property
     def site(self):
         return SEL_SITES[self._site.site]["name"]
 
+    @property
     def ftype(self):
         return SEL_FTYPES[self._ftype.ftype]["name"]
 
@@ -176,19 +183,20 @@ class UserSelection():
             return int(q)
 
     def select_keyword(self, kw):
-        self.key_word = input(f"Введите ключевое слово или несколько слов, разделённых пробелом => ")
-        return self.key_word
+        self._keyword = input(f"Введите ключевое слово или несколько слов, разделённых пробелом => ")
+        return self._keyword
+
 
     def select_search(self):
         while True:
-            kw_test = "без использования ключевого слова" if self.key_word == '' else \
-                      f'с использованием ключевого слова "{self.key_word}"'
-            region_text = "без учёта региона" if SEL_REGIONS[self.region.region]["hh_code"] == None else \
-                      f'по региону {SEL_REGIONS[self.region.region]["name"]}'
-            print(f'Из файла с данными по сайту {SEL_SITES[self.site.site]["name"]} ' \
-                  f'будут отбираться {SEARCH_TYPES[self.stype.stype]["name"].lower()}\n' \
+            kw_test = "без использования ключевого слова" if self._keyword == '' else \
+                      f'с использованием ключевого слова "{self._keyword}"'
+            region_text = "без учёта региона" if SEL_REGIONS[self._region.region]["hh_code"] == None else \
+                      f'по региону {SEL_REGIONS[self._region.region]["name"]}'
+            print(f'Из файла с данными по сайту {SEL_SITES[self._site.site]["name"]} ' \
+                  f'будут отбираться {SEARCH_TYPES[self._stype.stype]["name"].lower()}\n' \
                   f'{region_text} ' \
-                  f'в количестве {self.record_quant} {kw_test}. Изменить запрос (6)?')
+                  f'в количестве {self._record_quant} {kw_test}. Изменить запрос (6)?')
             print("\t1. Изменить сайт\n\t2. Изменить условие выбора вакансий\n\t3. Изменить количество вакансий\n" \
                   "\t4. Изменить ключевое слово\n\t5. Изменить регион\n\t6. Оставить как есть." )
             i = input("=> ")
@@ -196,22 +204,22 @@ class UserSelection():
             if not utils.contains_number(i) or int(i) not in {1, 2, 3, 4, 5, 6}:
                 print("Некорректный ввод, попробуйте ещё..")
                 continue
-            if i == '1': self.site.select()
-            if i == '2': self.stype.select()
-            if i == '3': self.record_quant = self.select_quant(self.record_quant)
-            if i == '4': self.key_word = self.select_keyword(self.key_word)
-            if i == '5': self.region.select()
+            if i == '1': self._site.select()
+            if i == '2': self._stype.select()
+            if i == '3': self._record_quant = self.select_quant(self._record_quant)
+            if i == '4': self._keyword = self.select_keyword(self._keyword)
+            if i == '5': self._region.select()
             if i == '6': return
 
     def select_action(self):
         self._action.select()
-        if self.action() == "DOWNLOAD":
+        if self.action == "DOWNLOAD":
             self._site.select()
             self._ftype.select()
             self.select_keyword("")
-        if self.action() == "SELECT":
+        if self.action == "SELECT":
             self._ftype.select()
-            self._select_search()
+            self.select_search()
 
 
 def main():

@@ -66,6 +66,6 @@ class Connector(ABC):
     @abstractmethod
     def load_from_file(self) -> dict:
         """
-        Записывает данные в файл
+        Забирает данные из файла
         """
         pass

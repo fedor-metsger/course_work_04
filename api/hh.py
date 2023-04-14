@@ -74,7 +74,7 @@ class HH(Engine):
         if not isinstance(kw, str):
             raise ValueError("Ключевые слова должны задаваться строкой")
 
-        print(f'Выполняется загрузка вакансий с сайта HeadHunter c ключевыми словами "{kw}"')
+        # print(f'Выполняется загрузка вакансий с сайта HeadHunter c ключевыми словами "{kw}"')
 
         count, pg = 0, 0
         while True:

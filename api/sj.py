@@ -43,7 +43,7 @@ class SJ(Engine):
                 print("Ошибка при запросе данных с сайта SuperJob: Status code ", response.status_code)
                 return None, None
 
-            # pages = response.json()["pages"]
+            pages = response.json()["total"] % PAGE_SIZE + 1
             # pprint(response.json())
             for i in response.json()["objects"]:
                 id = i["id"]
