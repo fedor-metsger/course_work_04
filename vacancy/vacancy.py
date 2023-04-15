@@ -28,6 +28,71 @@ class Vacancy:
         return {"id": self.id, "name": self.name, "company": self.company, "url": self.url,
                 "descr": self.descr, "sal_fr": self.sal_fr, "sal_to": self.sal_to, "curr": self.curr}
 
+    def __gt__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr > other.sal_fr
+
+    def __ge__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw
+            TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr >= other.sal_fr
+
+    def __lt__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw
+            TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr < other.sal_fr
+
+    def __le__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw
+            TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr <= other.sal_fr
+
+    def __eq__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw
+            TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr = other.sal_fr
+
+    def __ne__(self, other: Vacancy) -> bool:
+        """
+        Сравнивает два класса Vacancy. Сравнение идёт по минимальной заработной плате
+        :param other:
+        :return:
+        """
+        if not issubclass(other, Vacancy):
+            throw
+            TypeError("Вакансию можно сравнивать только с вакансией")
+        return self.sal_fr != other.sal_fr
+    
 class VacancyCollection():
     def __init__(self):
         self.__vacancies = {}
