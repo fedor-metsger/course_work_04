@@ -92,10 +92,10 @@ class HH(Engine):
                 print(f'Загрузка временно ограничена 1000 вакансий. Загружено {count} вакансий')
                 return True
 
-    def save_vacancies(self):
-        dict = self.connector.load_from_file()
-        dict.update(self.data.to_dict())
-        self.connector.dump_to_file(dict)
+    # def save_vacancies(self):
+    #     dict = self.connector.load_from_file()
+    #     dict.update(self.data.to_dict())
+    #     self.connector.dump_to_file(dict)
 
 
 def main():

@@ -173,6 +173,14 @@ class UserSelection():
     def ftype(self):
         return SEL_FTYPES[self._ftype.ftype]["name"]
 
+    @property
+    def stype(self):
+        return SEARCH_TYPES[self._stype.stype]["stype"]
+
+    @property
+    def quantity(self):
+        return self._record_quant
+
     def select_quant(self, defq):
         while True:
             q = input(f"Введите количество вакансий ({defq}) => ")
