@@ -27,18 +27,15 @@ class Engine(ABC):
         :return:
         """
     def save_vacancies(self):
+        """
+        Записывает данные, которые были загружены с сайта, в локальный файл.
+        Та информация, что уже была в файле - не теряется.
+        :return:
+        """
         dict = self.connector.load_from_file()
         dict.update(self.data.to_dict())
         self.connector.dump_to_file(dict)
-    #
-    # @abstractmethod
-    # def load_vacancies(self):
-    #     """
-    #     Осуществляет чтение данных из файла
-    #     :param:
-    #     :return:
-    #     """
-    #     pass
+
 
 
 

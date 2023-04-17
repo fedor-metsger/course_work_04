@@ -9,4 +9,6 @@ test.json
 test.yaml
 conector/test.json
 SJ_API.PNG
-SJ_API_KEY.txt
+sj_api_key.txt
+tests/.coverage
+.coverage

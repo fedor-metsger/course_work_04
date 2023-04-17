@@ -11,6 +11,10 @@ class JSONConnector(Connector):
             json.dump({}, f)
 
     def check_file_content(self):
+        """
+        Проверяет содержимое файла данных
+        :return:
+        """
         try:
             with open(self.fname, "r", encoding="utf-8") as f:
                 json.load(f)

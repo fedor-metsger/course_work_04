@@ -2,20 +2,30 @@
 from selection.selection import UserSelection
 from utils import Rates
 class Vacancy:
+    """
+    Класс для работы с одной вакансией
+    """
 
     curr_rate = {}
     rates = None
 
     def __init__(self, id: str, name: str, company:str, url: str,
                  descr: str, sal_fr:int, sal_to: int, curr: str):
-
-        if not isinstance(id, str) or id == "":
+        if not isinstance(id, str):
+            raise TypeError("ID вакансии должно быть строкой")
+        if not isinstance(name, str):
+            raise TypeError("Название вакансии должно быть строкой")
+        if not isinstance(company, str):
+            raise TypeError("Название компании должно быть строкой")
+        if not isinstance(url, str):
+            raise TypeError("URL вакансии должен быть строкой")
+        if id == "":
             raise ValueError("ID вакансии должно быть непустой строкой")
-        if not isinstance(name, str) or name == "":
+        if name == "":
             raise ValueError("Название вакансии должно быть непустой строкой")
-        if not isinstance(company, str) or company == "":
+        if company == "":
             raise ValueError("Название компании должно быть непустой строкой")
-        if not isinstance(url, str) or url == "":
+        if url == "":
             raise ValueError("URL вакансии должен быть непустой строкой")
         self.id = id
         self.name = name
@@ -46,8 +56,8 @@ class Vacancy:
         else: self.curr_rate[curr] = Vacancy.rates["RUB"] / Vacancy.rates[curr]
         return self.curr_rate[curr]
 
-    @staticmethod
-    def _convert_curr(sal: int, curr: str):
+    @classmethod
+    def _convert_curr(self, sal: int, curr: str):
         """
         Если валюта не рубль, конвертирует сумму
         :param sal: сумма в валюте
@@ -144,17 +154,25 @@ class Vacancy:
         :param kw:
         :return:
         """
-        for w in kwds.split():
-            if self.descr and w in self.descr or w in self.name or w in self.company: return True
+        for w in kwds.lower().split():
+            if self.descr and w in self.descr.lower() or \
+                w in self.name.lower() or w in self.company.lower(): return True
         return False
 
 
 class VacancyCollection():
+    """
+    Класс для работы с коллекцией вакансий
+    """
     def __init__(self):
         self.__vacancies = {}
 
     def __str__(self):
         return f'VacancyCollection({len(self.__vacancies)} vacancies)'
+
+    @property
+    def vacancies(self):
+        return self.__vacancies
 
     def add_vacancy(self, vac: Vacancy) -> bool:
         """
@@ -199,8 +217,8 @@ class VacancyCollection():
         if us.stype == "TO_SAL":
             data = sorted(self.__vacancies.values(), key=lambda v: v.converted_sal_to)
 
-        if us.keyword and us.keyword() != "":
-            for i in range(len(data) - 1, 0, -1):
+        if us.keyword and us.keyword != "":
+            for i in range(len(data) - 1, -1, -1):
                 if not data[i].match_kw(us.keyword):
                     del data[i]
 

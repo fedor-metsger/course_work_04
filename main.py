@@ -3,7 +3,7 @@ from connector.jsonconn import JSONConnector
 from connector.yamlconn import YAMLConnector
 from api.hh import HH
 from api.sj import SJ
-from selection.selection import UserSelection, SEL_ACTIONS, SEL_SITES, SEL_FTYPES
+from selection.selection import UserSelection
 from vacancy.vacancy import VacancyCollection
 from vacancy.hh import HHVacancy
 from vacancy.sj import SJVacancy
@@ -24,6 +24,10 @@ def print_vacancies(data: dict):
         if v.sal_to and v.curr and v.curr != '': sal_to = str(v.sal_to) + ' ' + v.curr
         elif v.sal_to: sal_fr = str(v.sal_to)
         print(" {:<25} | {:<25} | {:>11} | {:>11}".format(v.name[:25], v.company[:25], sal_fr, sal_to))
+    if len(data):
+        print(f"(Всего выведено {len(data)})")
+    else:
+        print("(Не найдено таких вакансий)")
 
 def main():
     us = UserSelection()
@@ -34,14 +38,8 @@ def main():
                   f'в файл {us.ftype} ' \
                   f'по ключевому слову "{us.keyword}"')
 
-            # if us.site() == "HeadHunter" and us.ftype() == "JSON":
             if us.site == "HeadHunter":
                 api = HH("hh.ru", JSONConnector("hh.json") if us.ftype == "JSON" else YAMLConnector("hh.yaml"))
-                # connector = JSONConnector("hh.json")
-                # api = HH("hh.ru", connector)
-            # elif us.site() == "HeadHunter" and us.ftype() == "YAML":
-            #     connector = YAMLConnector("hh.yaml")
-            #     api = HH("hh.ru", connector)
             elif us.site == "SuperJob":
                 api = SJ(JSONConnector("sj.json") if us.ftype == "JSON" else YAMLConnector("sj.yaml"))
 

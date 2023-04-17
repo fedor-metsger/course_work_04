@@ -24,9 +24,9 @@ SEL_FTYPES = {
 }
 
 SEL_REGIONS = {
-    1: {"name": "Москва", "hh_code": 1},
-    2: {"name": "Санкт-Петербург", "hh_code": 2},
-    3: {"name": "Остальные", "hh_code": None}
+    1: {"name": "Все", "hh_code": None},
+    2: {"name": "Москва", "hh_code": 1},
+    3: {"name": "Санкт-Петербург", "hh_code": 2}
 }
 
 
@@ -144,7 +144,7 @@ class UserSelection():
     """
     Класс описывает операцию, которую хочет выполнить пользователь
     """
-    def __init__(self):
+    def __init__(self, ):
         self._site = SelectionSite()
         self._stype = SelectionSearchType()
         self._action = SelectionAction()
@@ -153,13 +153,9 @@ class UserSelection():
         self._record_quant = 10
         self._keyword = ""
 
-    @property
-    def keyword(self):
-        return self._keyword
-
     def __str__(self):
-        return f'UserSelection({self.site._site}, {self._action.action}, ' \
-               f'{self._stype.stype}, {self._region.region}, {self._ftype.ftype}, {self.record_quant})'
+        return f'UserSelection({self._site.site}, {self._action.action}, ' \
+               f'{self._stype.stype}, {self._region.region}, {self._ftype.ftype}, {self._record_quant})'
 
     @property
     def action(self):
@@ -183,7 +179,7 @@ class UserSelection():
 
     @property
     def keyword(self):
-        if self._keyword or self._keyword != '':
+        if self._keyword and self._keyword != '':
             return self._keyword
         return ''
 
@@ -210,19 +206,18 @@ class UserSelection():
             print(f'Из файла с данными по сайту {SEL_SITES[self._site.site]["name"]} ' \
                   f'будут отбираться {SEARCH_TYPES[self._stype.stype]["name"].lower()}\n' \
                   f'{region_text} ' \
-                  f'в количестве {self._record_quant} {kw_test}. Изменить запрос (6)?')
+                  f'в количестве {self._record_quant} {kw_test}. Изменить запрос (5)?')
             print("\t1. Изменить сайт\n\t2. Изменить условие выбора вакансий\n\t3. Изменить количество вакансий\n" \
-                  "\t4. Изменить ключевое слово\n\t5. Изменить регион\n\t6. Оставить как есть." )
+                  "\t4. Изменить ключевое слово\n\t5. Оставить как есть." )
             i = input("=> ")
             if i == '': return
-            if not utils.contains_number(i) or int(i) not in {1, 2, 3, 4, 5, 6}:
+            if not utils.contains_number(i) or int(i) not in {1, 2, 3, 4, 5}:
                 print("Некорректный ввод, попробуйте ещё..")
                 continue
             if i == '1': self._site.select()
             if i == '2': self._stype.select()
             if i == '3': self._record_quant = self.select_quant(self._record_quant)
             if i == '4': self._keyword = self.select_keyword(self._keyword)
-            # if i == '5': self._region.select()
             if i == '5': return
 
     def select_action(self):

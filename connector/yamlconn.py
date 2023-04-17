@@ -11,6 +11,10 @@ class YAMLConnector(Connector):
             yaml.dump({}, f, allow_unicode=True, default_flow_style=False)
 
     def check_file_content(self):
+        """
+        Проверяет содержимое файла с данными
+        :return:
+        """
         try:
             with open(self.fname, "r", encoding="utf-8") as f:
                 yaml.load(f, Loader=yaml.FullLoader)

@@ -26,7 +26,6 @@ class SJ(Engine):
                   f'"{str(e)}"\n' \
                   "В первой строке файл должен содержать ключ доступа к API SuperJob")
 
-
     def __str__(self):
         return f'SJ({self.data})'
 
@@ -107,11 +106,6 @@ class SJ(Engine):
             if count >= 20:
                 print(f'Загрузка временно ограничена 20 вакансий. Загружено {count} вакансий')
                 return True
-
-    # def save_vacancies(self):
-    #     dict = self.connector.load_from_file()
-    #     dict.update(self.data.to_dict())
-    #     self.connector.dump_to_file(dict)
 
 
 def main():
