@@ -9,12 +9,23 @@ from connector.jsonconn import JSONConnector
 
 PAGE_SIZE = 10
 
-API_ID = "2294"
-API_KEY = "v3.r.137479983.d452e02a3a54ca2d71c13a0e5b6901887541f242.65a6dba4d80283fffeca51a08e74404541228624"
+API_FILE_NAME = "sj_api_key.txt"
+# API_KEY = "v3.r.137479983.d452e02a3a54ca2d71c13a0e5b6901887541f242.65a6dba4d80283fffeca51a08e74404541228624"
 
 class SJ(Engine):
-    # def __init__(self, conn: Connector):
-    #     Engine.__init__(self, conn)
+    def __init__(self, conn: Connector):
+        Engine.__init__(self, conn)
+        self.__api_key = None
+        try:
+            with open(API_FILE_NAME) as apifile:
+                self.__api_key = apifile.readline()
+            if not self.__api_key or self.__api_key == '':
+                raise EOFError("Файл пустой")
+        except Exception as e:
+            print(f'Ошибка при чтении файла "{API_FILE_NAME}":\n' \
+                  f'"{str(e)}"\n' \
+                  "В первой строке файл должен содержать ключ доступа к API SuperJob")
+
 
     def __str__(self):
         return f'SJ({self.data})'
@@ -29,7 +40,7 @@ class SJ(Engine):
         """
         url = "https://api.superjob.ru/2.0/vacancies"
         headers = {
-            "X-Api-App-Id": "v3.r.137479983.d452e02a3a54ca2d71c13a0e5b6901887541f242.65a6dba4d80283fffeca51a08e74404541228624",
+            "X-Api-App-Id": self.__api_key,
         }
         params = {
             "keyword": kw,
@@ -84,7 +95,7 @@ class SJ(Engine):
         count, pg = 0, 0
         while True:
             ret, ret_pages = self.__download_vacancies_page(kw, pg)
-            if not ret: return False
+            if not ret and count == 0: return False
             if self.data == None:
                 print(f"Нет вакансий с такими ключевыми словами")
                 return False

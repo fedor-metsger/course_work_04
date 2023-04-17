@@ -1,8 +1,10 @@
 
 from selection.selection import UserSelection
+from utils import Rates
 class Vacancy:
 
-    usd_rate, eur_rate = None, None
+    curr_rate = {}
+    rates = None
 
     def __init__(self, id: str, name: str, company:str, url: str,
                  descr: str, sal_fr:int, sal_to: int, curr: str):
@@ -25,38 +27,36 @@ class Vacancy:
         self.company = company
 
     def __str__(self):
-        return f'Vacancy("{self.name}", "{self.company}")'
+        return f'Vacancy("{self.name}", "{self.sal_fr}" "{self.curr}", "{self.company}")'
 
     def to_dict(self):
         return {"id": self.id, "name": self.name, "company": self.company, "url": self.url,
                 "descr": self.descr, "sal_fr": self.sal_fr, "sal_to": self.sal_to, "curr": self.curr}
 
     @classmethod
-    def get_usd_rate(self):
+    def get_curr_rate(self, curr: str) -> float:
         """
-        Получает курс доллара к рублю
+        Получает курс валюты к рублю. Пока заглушка
         :return:
         """
-        if self.usd_rate: return self.usd_rate
-        self.usd_rate = 80
-        return self.usd_rate
-
-    @classmethod
-    def get_eur_rate(self):
-        """
-        Получает курс евро к рублю
-        :return:
-        """
-        if self.eur_rate: return self.eur_rate
-        self.eur_rate = 90
-        return self.eur_rate
+        if curr == "BYR": curr = "BYN"
+        if curr in self.curr_rate: return self.curr_rate[curr]
+        if not Vacancy.rates: Vacancy.rates = Rates().get_exchange_rates()
+        if curr == "KZT": self.curr_rate[curr] = Vacancy.rates["RUB"]
+        else: self.curr_rate[curr] = Vacancy.rates["RUB"] / Vacancy.rates[curr]
+        return self.curr_rate[curr]
 
     @staticmethod
-    def _convert_curr(sal, curr):
+    def _convert_curr(sal: int, curr: str):
+        """
+        Если валюта не рубль, конвертирует сумму
+        :param sal: сумма в валюте
+        :param curr: название валюты
+        :return:
+        """
         if sal is None or sal == 0: return 0
-        if curr == "USD": sal *= Vacancy.get_usd_rate()
-        if curr == "EUR": sal *= Vacancy.get_eur_rate()
-        return sal
+        sal_ret = int(sal / Vacancy.get_curr_rate(curr)) if curr.lower() not in {"rur", "rub"} else sal
+        return sal_ret
 
     def __gt__(self, other) -> bool:
         """
@@ -130,6 +130,25 @@ class Vacancy:
         other_sal_fr = self._convert_curr(other.sal_fr, other.curr)
         return self_sal_fr != other_sal_fr
 
+    @property
+    def converted_sal_to(self):
+        """
+        Возвращает сконвертированную максимальную зарплату
+        :return:
+        """
+        return self._convert_curr(self.sal_to, self.curr)
+
+    def match_kw(self, kwds: str) -> bool:
+        """
+        Проверяет, содержит ли вакансия ключевые слова
+        :param kw:
+        :return:
+        """
+        for w in kwds.split():
+            if self.descr and w in self.descr or w in self.name or w in self.company: return True
+        return False
+
+
 class VacancyCollection():
     def __init__(self):
         self.__vacancies = {}
@@ -164,7 +183,7 @@ class VacancyCollection():
         """
         data = {}
         for i in self.__vacancies:
-            data[i] = self.__vacancies[i]
+            data[i] = self.__vacancies[i].to_dict()
         return data
 
     def select_vacancies(self, us: UserSelection):
@@ -177,6 +196,13 @@ class VacancyCollection():
         data = []
         if us.stype == "FROM_SAL":
             data = sorted(self.__vacancies.values())
+        if us.stype == "TO_SAL":
+            data = sorted(self.__vacancies.values(), key=lambda v: v.converted_sal_to)
 
-        return data[:us.quantity]
+        if us.keyword and us.keyword() != "":
+            for i in range(len(data) - 1, 0, -1):
+                if not data[i].match_kw(us.keyword):
+                    del data[i]
+
+        return data[-us.quantity:]
 

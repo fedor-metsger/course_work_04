@@ -181,6 +181,12 @@ class UserSelection():
     def quantity(self):
         return self._record_quant
 
+    @property
+    def keyword(self):
+        if self._keyword or self._keyword != '':
+            return self._keyword
+        return ''
+
     def select_quant(self, defq):
         while True:
             q = input(f"Введите количество вакансий ({defq}) => ")
@@ -216,8 +222,8 @@ class UserSelection():
             if i == '2': self._stype.select()
             if i == '3': self._record_quant = self.select_quant(self._record_quant)
             if i == '4': self._keyword = self.select_keyword(self._keyword)
-            if i == '5': self._region.select()
-            if i == '6': return
+            # if i == '5': self._region.select()
+            if i == '5': return
 
     def select_action(self):
         self._action.select()
