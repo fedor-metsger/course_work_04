@@ -12,3 +12,4 @@ SJ_API.PNG
 sj_api_key.txt
 tests/.coverage
 .coverage
+tests/.pytest_cache/

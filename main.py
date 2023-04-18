@@ -42,7 +42,6 @@ def main():
                 api = HH("hh.ru", JSONConnector("hh.json") if us.ftype == "JSON" else YAMLConnector("hh.yaml"))
             elif us.site == "SuperJob":
                 api = SJ(JSONConnector("sj.json") if us.ftype == "JSON" else YAMLConnector("sj.yaml"))
-
             else: return
             if api.download_vacancies(us.keyword):
                 api.save_vacancies()
@@ -56,8 +55,6 @@ def main():
             for i in vdict.values():
                 v = HHVacancy(**i) if us.site == "HeadHunter" else SJVacancy(**i)
                 vc.add_vacancy(v)
-            # for i in vc.select_vacancies(us):
-            #     print(i)
             print_vacancies(vc.select_vacancies(us))
         elif us.action == "EXIT":
             return

@@ -103,8 +103,8 @@ class SJ(Engine):
             if pg == ret_pages:
                 print(f'Загружено {count} вакансий')
                 return True
-            if count >= 20:
-                print(f'Загрузка временно ограничена 20 вакансий. Загружено {count} вакансий')
+            if count >= 100:
+                print(f'Загрузка временно ограничена 100 вакансий. Загружено {count} вакансий')
                 return True
 
 
